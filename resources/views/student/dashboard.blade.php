@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,11 +78,11 @@
                     <div class="card-body">
                         <h5 class="card-title">My Profile</h5>
                         <p class="card-text text-muted">
-                            View your registered student information.
+                            View and update your registered student information.
                         </p>
-                        <button class="btn btn-primary" disabled>
-                            Coming Soon
-                        </button>
+                        <a href="{{ route('student.profile.edit') }}" class="btn btn-primary">
+                            View My Profile
+                        </a>
                     </div>
                 </div>
             </div>

@@ -1,10 +1,11 @@
-
 <?php
 
 use App\Http\Controllers\ComplaintController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ComplaintController as AdminComplaintController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\StudentProfileController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -16,6 +17,12 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/home', function () {
         return view('student.dashboard');
     })->name('home');
+
+    Route::get('/profile', [StudentProfileController::class, 'edit'])
+    ->name('student.profile.edit');
+
+    Route::put('/profile', [StudentProfileController::class, 'update'])
+    ->name('student.profile.update');
 
     Route::get('/complaints', [ComplaintController::class, 'index'])
         ->name('complaints.index');
@@ -33,9 +40,8 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 // Protected administrator routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->name('admin.dashboard');
 
     Route::get('/admin/students', [StudentController::class, 'index'])
         ->name('admin.students.index');
