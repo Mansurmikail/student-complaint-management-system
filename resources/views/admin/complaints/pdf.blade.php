@@ -104,6 +104,10 @@
                 <th>Complaint ID</th>
                 <th>Student Name</th>
                 <th>Matric Number</th>
+                <th>Faculty</th>
+                <th>Department</th>
+                <th>Level</th>
+                <th>Trade</th>
                 <th>Subject</th>
                 <th>Category</th>
                 <th>Date Submitted</th>
@@ -118,6 +122,10 @@
                     <td>{{ $complaint->id }}</td>
                     <td>{{ $complaint->user->name }}</td>
                     <td>{{ $complaint->user->matric_number ?? 'N/A' }}</td>
+                    <td>{{ $complaint->user->faculty ?? 'N/A' }}</td>
+                    <td>{{ $complaint->user->department ?? 'N/A' }}</td>
+                    <td>{{ $complaint->user->level ?? 'N/A' }}</td>
+                    <td>{{ $complaint->user->trade ?? 'N/A' }}</td>
                     <td>{{ $complaint->subject }}</td>
                     <td>{{ $complaint->category }}</td>
                     <td>{{ $complaint->created_at->format('d M Y') }}</td>
@@ -127,13 +135,14 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8" style="text-align: center;">
+                    <td colspan="12" style="text-align: center;">
                         No complaints found for the selected criteria.
                     </td>
                 </tr>
             @endforelse
         </tbody>
     </table>
+
 
     <div class="footer">
         VSESC, The Polytechnic, Ibadan<br>

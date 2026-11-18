@@ -12,8 +12,8 @@
 
 <div class="container py-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>My Complaints</h2>
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+        <h2 class="mb-0">My Complaints</h2>
 
         <a href="{{ route('complaints.create') }}" class="btn btn-primary">
             Submit New Complaint
@@ -26,9 +26,9 @@
         </div>
     @else
         <div class="card shadow-sm">
-            <div class="card-body">
+            <div class="card-body p-2 p-md-3">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle">
+                    <table class="table table-bordered table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th>Subject</th>
@@ -46,24 +46,22 @@
                                     <td>{{ $complaint->category }}</td>
                                     <td>{{ $complaint->created_at->format('d M Y, h:i A') }}</td>
                                     <td>
-                                        <td>
-                                            @php
-                                                $statusColors = [
-                                                    'pending' => 'warning',
-                                                    'under_review' => 'info',
-                                                    'resolved' => 'success',
-                                                    'rejected' => 'danger',
-                                                ];
-                                            @endphp
+                                        @php
+                                            $statusColors = [
+                                                'pending' => 'warning',
+                                                'under_review' => 'info',
+                                                'resolved' => 'success',
+                                                'rejected' => 'danger',
+                                            ];
+                                        @endphp
 
-                                            <span class="badge bg-{{ $statusColors[$complaint->status] ?? 'secondary' }}">
-                                                {{ ucfirst(str_replace('_', ' ', $complaint->status)) }}
-                                            </span>
-                                        </td>
+                                        <span class="badge bg-{{ $statusColors[$complaint->status] ?? 'secondary' }}">
+                                            {{ ucfirst(str_replace('_', ' ', $complaint->status)) }}
+                                        </span>
                                     </td>
                                     <td>
                                         <a href="{{ route('complaints.show', $complaint->id) }}"
-                                        class="btn btn-sm btn-primary">
+                                           class="btn btn-sm btn-primary">
                                             View Details
                                         </a>
                                     </td>

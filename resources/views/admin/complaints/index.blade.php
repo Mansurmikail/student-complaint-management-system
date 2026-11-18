@@ -23,9 +23,9 @@
         </div>
     </nav>
 
-    <div class="container py-5">
+    <div class="container py-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
             <div>
                 <h3>All Student Complaints</h3>
                 <p class="text-muted mb-0">
@@ -33,15 +33,15 @@
                 </p>
             </div>
 
-            <div class="d-flex gap-2">
+            <div class="d-grid gap-2 d-sm-flex flex-wrap">
                 <a href="{{ route('admin.complaints.print', request()->query()) }}"
-                target="_blank"
-                class="btn btn-success">
+                   target="_blank"
+                   class="btn btn-success">
                     Print Report
                 </a>
 
                 <a href="{{ route('admin.complaints.exportPdf', request()->query()) }}"
-                    class="btn btn-danger">
+                   class="btn btn-danger">
                     Download PDF
                 </a>
 
@@ -51,6 +51,7 @@
             </div>
         </div>
 
+        <!-- Complaint Filters -->
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-body">
 
@@ -60,7 +61,7 @@
 
                     <div class="row g-3">
 
-                        <div class="col-md-6">
+                        <div class="col-12 col-md-6">
                             <label for="student" class="form-label">Student</label>
                             <input
                                 type="text"
@@ -72,7 +73,7 @@
                             >
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3">
                             <label for="category" class="form-label">Category</label>
                             <select name="category" id="category" class="form-select">
                                 <option value="">All Categories</option>
@@ -84,7 +85,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3">
                             <label for="status" class="form-label">Status</label>
                             <select name="status" id="status" class="form-select">
                                 <option value="">All Statuses</option>
@@ -101,7 +102,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3">
                             <label for="date_from" class="form-label">Date From</label>
                             <input
                                 type="date"
@@ -112,7 +113,7 @@
                             >
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-12 col-md-3">
                             <label for="date_to" class="form-label">Date To</label>
                             <input
                                 type="date"
@@ -123,12 +124,13 @@
                             >
                         </div>
 
-                        <div class="col-md-6 d-flex align-items-end gap-2">
+                        <div class="col-12 col-md-6 d-grid d-sm-flex align-items-end gap-2">
                             <button type="submit" class="btn btn-primary">
                                 Apply Filters
                             </button>
 
-                            <a href="{{ route('admin.complaints.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('admin.complaints.index') }}"
+                               class="btn btn-outline-secondary">
                                 Clear Filters
                             </a>
                         </div>
@@ -139,85 +141,103 @@
             </div>
         </div>
 
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
+        <!-- Complaint Records -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">Complaint Records</h5>
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
+                <h5 class="mb-0">Complaint Records</h5>
 
-                    <span class="text-muted">
-                        {{ $complaints->total() }} complaint(s) found
-                    </span>
+                <span class="text-muted">
+                    {{ $complaints->total() }} complaint(s) found
+                </span>
+            </div>
+
+            @if ($complaints->count() > 0)
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Student Name</th>
+                                <th>Matric Number</th>
+                                <th>Department</th>
+                                <th>Level</th>
+                                <th>Trade</th>
+                                <th>Subject</th>
+                                <th>Category</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach ($complaints as $complaint)
+                                <tr>
+                                    <td>{{ $complaint->id }}</td>
+
+                                    <td>{{ $complaint->user->name }}</td>
+
+                                    <td>{{ $complaint->user->matric_number }}</td>
+
+                                    <td>{{ $complaint->user->department }}</td>
+
+                                    <td>{{ $complaint->user->level ?? 'Not provided' }}</td>
+
+                                    <td>{{ $complaint->user->trade ?? 'Not provided' }}</td>
+
+                                    <td>{{ $complaint->subject }}</td>
+
+                                    <td>{{ $complaint->category }}</td>
+
+                                    <td>{{ $complaint->created_at->format('d M Y') }}</td>
+
+                                    <td>
+                                        @php
+                                            $statusColors = [
+                                                'pending' => 'warning',
+                                                'under_review' => 'info',
+                                                'resolved' => 'success',
+                                                'rejected' => 'danger',
+                                            ];
+                                        @endphp
+
+                                        <span class="badge bg-{{ $statusColors[$complaint->status] ?? 'secondary' }}">
+                                            {{ ucfirst(str_replace('_', ' ', $complaint->status)) }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <a href="{{ route('admin.complaints.show', $complaint->id) }}"
+                                        class="btn btn-primary btn-sm">
+                                            View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+
+                    </table>
                 </div>
 
-                @if ($complaints->count() > 0)
+                <div class="mt-3">
+                    {{ $complaints->links() }}
+                </div>
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover align-middle">
+            @else
 
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Student</th>
-                                    <th>Subject</th>
-                                    <th>Category</th>
-                                    <th>Date Submitted</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
+                <div class="alert alert-info mb-0">
+                    No complaints match your search criteria.
+                </div>
 
-                            <tbody>
-                                @foreach ($complaints as $complaint)
-                                    <tr>
-                                        <td>{{ $complaint->id }}</td>
-                                        <td>{{ $complaint->user->name }}</td>
-                                        <td>{{ $complaint->subject }}</td>
-                                        <td>{{ $complaint->category }}</td>
-                                        <td>{{ $complaint->created_at->format('d M Y') }}</td>
-                                        <td>
-                                            @php
-                                                $statusColors = [
-                                                    'pending' => 'warning',
-                                                    'under_review' => 'info',
-                                                    'resolved' => 'success',
-                                                    'rejected' => 'danger',
-                                                ];
-                                            @endphp
+            @endif
 
-                                            <span class="badge bg-{{ $statusColors[$complaint->status] ?? 'secondary' }}">
-                                                {{ ucfirst(str_replace('_', ' ', $complaint->status)) }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.complaints.show', $complaint->id) }}"
-                                               class="btn btn-primary btn-sm">
-                                                View Details
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-
-                        </table>
-                    </div>
-
-                    <div class="mt-3">
-                        {{ $complaints->links() }}
-                    </div>
-
-                @else
-
-                    <div class="alert alert-info mb-0">
-                        No complaints match your search criteria.
-                    </div>
-
-                @endif
-
-            </div>
         </div>
-
     </div>
+
 
 </body>
 </html>

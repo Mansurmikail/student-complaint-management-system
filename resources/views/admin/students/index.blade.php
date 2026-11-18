@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,12 +7,25 @@
     <title>Manage Students - Student Complaint System</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .student-table {
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
+
 <body class="bg-light">
 
 <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-        <a href="{{ route('admin.dashboard') }}" class="navbar-brand">
+    <div class="container d-flex flex-wrap gap-2">
+        <a href="{{ route('admin.dashboard') }}" class="navbar-brand mb-0">
             Student Complaint System - Admin
         </a>
 
@@ -24,10 +38,10 @@
     </div>
 </nav>
 
-<div class="container mt-5">
+<div class="container py-4 py-md-5">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Manage Students</h3>
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+        <h3 class="mb-0">Manage Students</h3>
 
         <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
             Back to Dashboard
@@ -44,31 +58,37 @@
         <div class="card-body">
 
             <form method="GET" action="{{ route('admin.students.index') }}" class="mb-4">
-                <div class="input-group">
-                    <input
-                        type="text"
-                        name="search"
-                        class="form-control"
-                        placeholder="Search by name, email or matric number"
-                        value="{{ request('search') }}"
-                    >
+                <div class="row g-2">
+                    <div class="col-12 col-md">
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="Search by name, email or matric number"
+                            value="{{ request('search') }}"
+                        >
+                    </div>
 
-                    <button type="submit" class="btn btn-primary">
-                        Search
-                    </button>
+                    <div class="col-12 col-sm-auto d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            Search
+                        </button>
+                    </div>
 
-                    <a href="{{ route('admin.students.index') }}" class="btn btn-outline-secondary">
-                        Clear
-                    </a>
+                    <div class="col-12 col-sm-auto d-grid">
+                        <a href="{{ route('admin.students.index') }}" class="btn btn-outline-secondary">
+                            Clear
+                        </a>
+                    </div>
                 </div>
             </form>
 
-            <p class="text-muted">
+            <p class="text-muted mb-3">
                 Total students found: {{ $students->total() }}
             </p>
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
+            <div class="table-responsive" style="width: 100%; overflow-x: auto;">
+                <table class="table table-bordered table-striped align-middle student-table" style="min-width: 1050px;">
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
@@ -85,11 +105,13 @@
                         @forelse($students as $student)
                             <tr>
                                 <td>{{ $students->firstItem() + $loop->index }}</td>
+
                                 <td>
                                     <a href="{{ route('admin.students.show', $student->id) }}" class="text-decoration-none fw-semibold">
                                         {{ $student->name }}
                                     </a>
                                 </td>
+
                                 <td>{{ $student->matric_number ?? 'N/A' }}</td>
                                 <td>{{ $student->email }}</td>
                                 <td>{{ $student->department ?? 'N/A' }}</td>

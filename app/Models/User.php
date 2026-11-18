@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'matric_number',
     'department',
     'faculty',
+    'level',
+    'trade',
     'phone',
     'is_active',
 ])]

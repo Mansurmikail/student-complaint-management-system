@@ -21,6 +21,25 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
+        $trades = [
+            'Barbering',
+            'Beading Works',
+            'Brick/Block Moulding And Concreting',
+            'Catering and Confectioneries',
+            'Cosmetology',
+            'Electrical Installation',
+            'Fisheries',
+            'Garment Making',
+            'GSM Repairs and Servicing',
+            'Household Products',
+            'Leather Works',
+            'Modern Car Repairs and Servicing',
+            'Pure Water Production and Marketing',
+            'Renewable Energy and Solar Inverter Energy',
+            'Textile Technology',
+            'Website Design and Software Development',
+        ];
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
 
@@ -43,6 +62,16 @@ class CreateNewUser implements CreatesNewUsers
 
             'department' => ['required', 'string', 'max:255'],
 
+            'level' => [
+                'required',
+                Rule::in(['ND I', 'ND II', 'HND I', 'HND II']),
+            ],
+
+            'trade' => [
+                'required',
+                Rule::in($trades),
+            ],
+
             'phone' => ['required', 'string', 'max:30'],
 
             'password' => $this->passwordRules(),
@@ -54,6 +83,8 @@ class CreateNewUser implements CreatesNewUsers
             'matric_number' => $input['matric_number'],
             'faculty' => $input['faculty'],
             'department' => $input['department'],
+            'level' => $input['level'],
+            'trade' => $input['trade'],
             'phone' => $input['phone'],
             'password' => $input['password'],
         ]);

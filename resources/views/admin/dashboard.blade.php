@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +6,24 @@
     <title>Admin Dashboard - Student Complaint System</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        @media (max-width: 576px) {
+            .chart-container {
+                height: 260px;
+            }
+
+            .dashboard-card .card-body {
+                padding: 12px;
+            }
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -23,7 +40,7 @@
         </div>
     </nav>
 
-    <div class="container mt-5 mb-5">
+    <div class="container py-4 py-md-5">
 
         <div class="card shadow-sm mb-4">
             <div class="card-body">
@@ -42,10 +59,11 @@
             and analyse complaint statistics.
         </p>
 
-        <!-- Total Complaints -->
+        <!-- Complaint Statistics -->
         <div class="row mb-4">
-            <div class="col-md-4 mb-3">
-                <div class="card shadow-sm border-primary h-100">
+
+            <div class="col-12 col-sm-6 col-md-4 mb-3">
+                <div class="card dashboard-card shadow-sm border-primary h-100">
                     <div class="card-body">
                         <h6 class="text-muted">Total Complaints</h6>
                         <h2 class="text-primary">{{ $totalComplaints }}</h2>
@@ -53,8 +71,8 @@
                 </div>
             </div>
 
-            <div class="col-md-2 col-6 mb-3">
-                <div class="card shadow-sm border-warning h-100">
+            <div class="col-6 col-md-2 mb-3">
+                <div class="card dashboard-card shadow-sm border-warning h-100">
                     <div class="card-body">
                         <h6 class="text-muted">Pending</h6>
                         <h3 class="text-warning">{{ $statusCounts['pending'] }}</h3>
@@ -62,8 +80,8 @@
                 </div>
             </div>
 
-            <div class="col-md-2 col-6 mb-3">
-                <div class="card shadow-sm border-info h-100">
+            <div class="col-6 col-md-2 mb-3">
+                <div class="card dashboard-card shadow-sm border-info h-100">
                     <div class="card-body">
                         <h6 class="text-muted">Under Review</h6>
                         <h3 class="text-info">{{ $statusCounts['under_review'] }}</h3>
@@ -71,8 +89,8 @@
                 </div>
             </div>
 
-            <div class="col-md-2 col-6 mb-3">
-                <div class="card shadow-sm border-success h-100">
+            <div class="col-6 col-md-2 mb-3">
+                <div class="card dashboard-card shadow-sm border-success h-100">
                     <div class="card-body">
                         <h6 class="text-muted">Resolved</h6>
                         <h3 class="text-success">{{ $statusCounts['resolved'] }}</h3>
@@ -80,33 +98,40 @@
                 </div>
             </div>
 
-            <div class="col-md-2 col-6 mb-3">
-                <div class="card shadow-sm border-danger h-100">
+            <div class="col-6 col-md-2 mb-3">
+                <div class="card dashboard-card shadow-sm border-danger h-100">
                     <div class="card-body">
                         <h6 class="text-muted">Rejected</h6>
                         <h3 class="text-danger">{{ $statusCounts['rejected'] }}</h3>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- Complaint Charts -->
         <div class="row mb-4">
 
-            <div class="col-lg-6 mb-4">
+            <div class="col-12 col-lg-6 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <h5 class="card-title mb-3">Complaints by Category</h5>
-                        <canvas id="categoryChart"></canvas>
+
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-6 mb-4">
+            <div class="col-12 col-lg-6 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <h5 class="card-title mb-3">Monthly Complaint Trends</h5>
-                        <canvas id="monthlyChart"></canvas>
+
+                        <div class="chart-container">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,7 +147,8 @@
                     View submitted complaints, review them and respond to students.
                 </p>
 
-                <a href="{{ route('admin.complaints.index') }}" class="btn btn-primary mb-3">
+                <a href="{{ route('admin.complaints.index') }}"
+                   class="btn btn-primary mb-3">
                     Manage Complaints
                 </a>
 
@@ -134,7 +160,8 @@
                     View student accounts and search by name, email or matriculation number.
                 </p>
 
-                <a href="{{ route('admin.students.index') }}" class="btn btn-primary">
+                <a href="{{ route('admin.students.index') }}"
+                   class="btn btn-primary">
                     Manage Students
                 </a>
             </div>
@@ -170,6 +197,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -201,6 +229,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,

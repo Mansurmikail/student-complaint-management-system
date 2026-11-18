@@ -7,13 +7,20 @@
     <title>Complaint Details - Student Complaint System</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .text-content {
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container py-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Complaint Details</h2>
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+        <h2 class="mb-0">Complaint Details</h2>
 
         <a href="{{ route('complaints.index') }}" class="btn btn-secondary">
             Back to My Complaints
@@ -34,7 +41,7 @@
 
             <div class="mb-3">
                 <strong>Subject:</strong>
-                {{ $complaint->subject }}
+                <div class="text-content">{{ $complaint->subject }}</div>
             </div>
 
             <div class="mb-3">
@@ -44,7 +51,7 @@
 
             <div class="mb-3">
                 <strong>Description:</strong>
-                <p>{{ $complaint->description }}</p>
+                <p class="text-content">{{ $complaint->description }}</p>
             </div>
 
             <div class="mb-3">
@@ -55,19 +62,28 @@
             <div class="mb-3">
                 <strong>Current Status:</strong>
 
-                <span class="badge bg-warning text-dark">
+                @php
+                    $statusColors = [
+                        'pending' => 'warning',
+                        'under_review' => 'info',
+                        'resolved' => 'success',
+                        'rejected' => 'danger',
+                    ];
+                @endphp
+
+                <span class="badge bg-{{ $statusColors[$complaint->status] ?? 'secondary' }}">
                     {{ ucfirst(str_replace('_', ' ', $complaint->status)) }}
                 </span>
             </div>
 
-        <hr>
+            <hr>
 
             <div class="mt-4">
                 <h5>Administrator Response</h5>
 
                 @if ($complaint->admin_response)
                     <div class="alert alert-info">
-                        <p class="mb-2">{{ $complaint->admin_response }}</p>
+                        <p class="mb-2 text-content">{{ $complaint->admin_response }}</p>
 
                         <small class="text-muted">
                             Responded by:

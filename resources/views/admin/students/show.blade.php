@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,18 @@
     <title>Student Profile - Student Complaint System</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .student-table {
+            min-width: 850px;
+        }
+
+        .student-details {
+            overflow-wrap: anywhere;
+        }
+    </style>
 </head>
+
 <body class="bg-light">
 
 <nav class="navbar navbar-dark bg-dark">
@@ -24,117 +36,123 @@
     </div>
 </nav>
 
-<div class="container mt-5">
+<div class="container py-4 py-md-5">
 
-        @if (session('success'))
+    @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
-        @endif
+    @endif
 
-        @if ($errors->has('password_reset'))
+    @if ($errors->has('password_reset'))
         <div class="alert alert-danger">
             {{ $errors->first('password_reset') }}
         </div>
-        @endif
+    @endif
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Student Profile</h3>
+    <div class="mb-4">
+        <h3 class="mb-3">Student Profile</h3>
 
-        <div>
+        <div class="d-grid gap-2 d-sm-flex flex-wrap">
+
             <a href="{{ route('admin.students.edit', $student->id) }}" class="btn btn-primary">
                 Edit Student
             </a>
-                <form method="POST" action="{{ route('admin.students.toggleStatus', $student->id) }}" class="d-inline">
-                    @csrf
-                    @method('PATCH')
 
-                    @if ($student->is_active)
-                        <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Are you sure you want to deactivate this student account?')">
-                            Deactivate Account
-                        </button>
-                    @else
-                        <button type="submit" class="btn btn-success"
-                                onclick="return confirm('Are you sure you want to activate this student account?')">
-                            Activate Account
-                        </button>
-                    @endif
-                </form>
+            <form method="POST" action="{{ route('admin.students.toggleStatus', $student->id) }}">
+                @csrf
+                @method('PATCH')
 
-
-                <form method="POST"
-                    action="{{ route('admin.students.passwordReset', $student->id) }}"
-                    class="d-inline"
-                    onsubmit="return confirm('Send a password reset link to this student?')">
-                    @csrf
-                    <button type="submit" class="btn btn-warning">
-                        Send Password Reset Link
+                @if ($student->is_active)
+                    <button type="submit" class="btn btn-danger w-100"
+                        onclick="return confirm('Are you sure you want to deactivate this student account?')">
+                        Deactivate Account
                     </button>
-                </form>
+                @else
+                    <button type="submit" class="btn btn-success w-100"
+                        onclick="return confirm('Are you sure you want to activate this student account?')">
+                        Activate Account
+                    </button>
+                @endif
+            </form>
+
+            <form method="POST"
+                action="{{ route('admin.students.passwordReset', $student->id) }}"
+                onsubmit="return confirm('Send a password reset link to this student?')">
+                @csrf
+
+                <button type="submit" class="btn btn-warning w-100">
+                    Send Password Reset Link
+                </button>
+            </form>
 
             <a href="{{ route('admin.students.index') }}" class="btn btn-secondary">
                 Back to Students
             </a>
+
         </div>
     </div>
 
     <div class="card shadow-sm mb-4">
+
         <div class="card-header bg-dark text-white">
             Student Information
         </div>
 
-        <div class="card-body">
+        <div class="card-body student-details">
 
             <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Full Name:</div>
-                <div class="col-md-8">{{ $student->name }}</div>
+                <div class="col-12 col-md-4 fw-bold">Full Name:</div>
+                <div class="col-12 col-md-8">{{ $student->name }}</div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Email Address:</div>
-                <div class="col-md-8">{{ $student->email }}</div>
+                <div class="col-12 col-md-4 fw-bold">Email Address:</div>
+                <div class="col-12 col-md-8">{{ $student->email }}</div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Matric Number:</div>
-                <div class="col-md-8">{{ $student->matric_number ?? 'N/A' }}</div>
+                <div class="col-12 col-md-4 fw-bold">Matric Number:</div>
+                <div class="col-12 col-md-8">{{ $student->matric_number ?? 'N/A' }}</div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Department:</div>
-                <div class="col-md-8">{{ $student->department ?? 'N/A' }}</div>
+                <div class="col-12 col-md-4 fw-bold">Department:</div>
+                <div class="col-12 col-md-8">{{ $student->department ?? 'N/A' }}</div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Faculty:</div>
-                <div class="col-md-8">{{ $student->faculty ?? 'N/A' }}</div>
+                <div class="col-12 col-md-4 fw-bold">Faculty:</div>
+                <div class="col-12 col-md-8">{{ $student->faculty ?? 'N/A' }}</div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Phone Number:</div>
-                <div class="col-md-8">{{ $student->phone ?? 'N/A' }}</div>
+                <div class="col-12 col-md-4 fw-bold">Phone Number:</div>
+                <div class="col-12 col-md-8">{{ $student->phone ?? 'N/A' }}</div>
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Account Created:</div>
-                <div class="col-md-8">{{ $student->created_at->format('d M Y, h:i A') }}</div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-4 fw-bold">Total Complaints:</div>
-                <div class="row mb-3">
-                    <div class="col-md-4 fw-bold">Account Status:</div>
-                    <div class="col-md-8">
-                        @if ($student->is_active)
-                            <span class="badge bg-success">Active</span>
-                        @else
-                            <span class="badge bg-danger">Deactivated</span>
-                        @endif
-                    </div>
+                <div class="col-12 col-md-4 fw-bold">Account Created:</div>
+                <div class="col-12 col-md-8">
+                    {{ $student->created_at->format('d M Y, h:i A') }}
                 </div>
-                <div class="col-md-8">
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12 col-md-4 fw-bold">Total Complaints:</div>
+                <div class="col-12 col-md-8">
                     <span class="badge bg-primary">{{ $student->complaints_count }}</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12 col-md-4 fw-bold">Account Status:</div>
+                <div class="col-12 col-md-8">
+                    @if ($student->is_active)
+                        <span class="badge bg-success">Active</span>
+                    @else
+                        <span class="badge bg-danger">Deactivated</span>
+                    @endif
                 </div>
             </div>
 
@@ -142,14 +160,16 @@
     </div>
 
     <div class="card shadow-sm">
+
         <div class="card-header bg-dark text-white">
             Student Complaint History
         </div>
 
         <div class="card-body">
 
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
+            <div class="table-responsive" style="width: 100%; overflow-x: auto;">
+                <table class="table table-bordered table-striped align-middle student-table">
+
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
@@ -165,10 +185,17 @@
                         @forelse($complaints as $complaint)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+
                                 <td>{{ $complaint->subject }}</td>
+
                                 <td>{{ $complaint->category }}</td>
-                                <td>{{ ucwords(str_replace('_', ' ', $complaint->status)) }}</td>
+
+                                <td>
+                                    {{ ucwords(str_replace('_', ' ', $complaint->status)) }}
+                                </td>
+
                                 <td>{{ $complaint->created_at->format('d M Y') }}</td>
+
                                 <td>
                                     <a href="{{ route('admin.complaints.show', $complaint->id) }}"
                                        class="btn btn-sm btn-primary">
@@ -184,6 +211,7 @@
                             </tr>
                         @endforelse
                     </tbody>
+
                 </table>
             </div>
 

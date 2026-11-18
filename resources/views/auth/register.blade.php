@@ -100,6 +100,56 @@
                                 >
                             </div>
 
+
+                            <!-- Level Dropdown -->
+                            <div class="mb-3">
+                                <label for="level" class="form-label">Level</label>
+                                <select name="level" id="level" class="form-select" required>
+                                    <option value="">Select Your Level</option>
+                                    <option value="ND I" @selected(old('level') == 'ND I')>ND I</option>
+                                    <option value="ND II" @selected(old('level') == 'ND II')>ND II</option>
+                                    <option value="HND I" @selected(old('level') == 'HND I')>HND I</option>
+                                    <option value="HND II" @selected(old('level') == 'HND II')>HND II</option>
+                                </select>
+                            </div>
+
+                            <!-- Trade Dropdown -->
+                            <div class="mb-3">
+                                <label for="trade" class="form-label">Trade</label>
+                                <select name="trade" id="trade" class="form-select" required>
+                                    <option value="">Select Your Trade</option>
+
+                                    @php
+                                        $trades = [
+                                            'Barbering',
+                                            'Beading Works',
+                                            'Brick/Block Moulding And Concreting',
+                                            'Catering and Confectioneries',
+                                            'Cosmetology',
+                                            'Electrical Installation',
+                                            'Fisheries',
+                                            'Garment Making',
+                                            'GSM Repairs and Servicing',
+                                            'Household Products',
+                                            'Leather Works',
+                                            'Modern Car Repairs and Servicing',
+                                            'Pure Water Production and Marketing',
+                                            'Renewable Energy and Solar Inverter Energy',
+                                            'Textile Technology',
+                                            'Website Design and Software Development',
+                                        ];
+                                    @endphp
+
+                                    @foreach ($trades as $trade)
+                                        <option value="{{ $trade }}"
+                                            @selected(old('trade') == $trade)>
+                                            {{ $trade }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone Number</label>
                                 <input

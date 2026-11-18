@@ -68,11 +68,34 @@
             }
 
             .report-container {
-                max-width: 100%;
-                margin: 0;
-                padding: 0;
-                border: none;
+            width: 100%;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 35px;
+            background: #fff;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 576px) {
+            .report-container {
+                margin: 0 auto;
+                padding: 15px;
             }
+
+            .report-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .report-header h4 {
+                font-size: 1.1rem;
+            }
+
+            .report-meta {
+                gap: 8px;
+                flex-direction: column;
+            }
+        }
 
             .no-print {
                 display: none !important;
@@ -102,7 +125,7 @@
 
 <div class="report-container">
 
-    <div class="d-flex justify-content-end mb-4 no-print gap-2">
+    <div class="d-grid d-sm-flex justify-content-sm-end mb-4 no-print gap-2">
         <a href="{{ route('admin.complaints.index') }}"
            class="btn btn-secondary">
             Back to Complaints
@@ -132,14 +155,17 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle">
-
+        <table class="table table-bordered table-striped align-middle" style="min-width: 1400px;">
             <thead class="table-dark">
                 <tr>
                     <th>S/N</th>
                     <th>Complaint ID</th>
                     <th>Student Name</th>
                     <th>Matric Number</th>
+                    <th>Faculty</th>
+                    <th>Department</th>
+                    <th>Level</th>
+                    <th>Trade</th>
                     <th>Subject</th>
                     <th>Category</th>
                     <th>Date Submitted</th>
@@ -151,19 +177,34 @@
                 @forelse ($complaints as $complaint)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+
                         <td>{{ $complaint->id }}</td>
+
                         <td>{{ $complaint->user->name }}</td>
+
                         <td>{{ $complaint->user->matric_number ?? 'N/A' }}</td>
+
+                        <td>{{ $complaint->user->faculty ?? 'N/A' }}</td>
+
+                        <td>{{ $complaint->user->department ?? 'N/A' }}</td>
+
+                        <td>{{ $complaint->user->level ?? 'N/A' }}</td>
+
+                        <td>{{ $complaint->user->trade ?? 'N/A' }}</td>
+
                         <td>{{ $complaint->subject }}</td>
+
                         <td>{{ $complaint->category }}</td>
+
                         <td>{{ $complaint->created_at->format('d M Y') }}</td>
+
                         <td>
                             {{ ucfirst(str_replace('_', ' ', $complaint->status)) }}
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center">
+                        <td colspan="12" class="text-center">
                             No complaints found for the selected criteria.
                         </td>
                     </tr>

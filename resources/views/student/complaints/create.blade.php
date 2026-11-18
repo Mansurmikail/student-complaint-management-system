@@ -99,7 +99,7 @@
                                 >{{ old('description') }}</textarea>
                             </div>
 
-                            <div class="d-flex justify-content-between">
+                            <div class="d-grid gap-2 d-sm-flex justify-content-sm-between">
                                 <a href="{{ route('home') }}" class="btn btn-secondary">
                                     Back to Dashboard
                                 </a>
@@ -108,7 +108,6 @@
                                     Submit Complaint
                                 </button>
                             </div>
-
                         </form>
 
                     </div>
